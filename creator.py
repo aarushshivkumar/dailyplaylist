@@ -25,7 +25,7 @@ previous_time.append(current_time)
 time.sleep(10)
 print('starting')
 while True:
-    if datetime.now().date!=datetime.fromisoformat(current_time.replace("Z", "+00:00")).date():
+    if datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0).date()!=datetime.fromisoformat(current_time.replace("Z", "+00:00")).date():
         break
     else:
         current_time = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
