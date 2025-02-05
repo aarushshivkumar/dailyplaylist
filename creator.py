@@ -25,7 +25,7 @@ previous_time.append(current_time)
 time.sleep(10)
 print('starting')
 while True:
-    if datetime.now().hour>=23 and datetime.now().minute>59:
+    if datetime.now().date!=datetime.fromisoformat(current_time.replace("Z", "+00:00")).date():
         break
     else:
         current_time = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
