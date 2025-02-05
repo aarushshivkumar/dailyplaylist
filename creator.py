@@ -26,7 +26,18 @@ time.sleep(10)
 print('starting')
 while True:
     if datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0).date()!=datetime.fromisoformat(current_time.replace("Z", "+00:00")).date():
-        break
+        total = str(int(total/count))
+        playlist_name = "mixtape/"+ str(date(day=datetime.now().day ,month=datetime.now().month ,year=datetime.now().year))
+        new_playlist = sp.user_playlist_create(user=sp.current_user()['id'],name=playlist_name, description="i'm feeling a light to decent " + total)
+        if track_uris:
+            sp.playlist_add_items(playlist_id=new_playlist['id'], items=track_uris)
+        for image in cover_img:
+            img = Image.blend(img, image, 0.2)
+        img.save("encode.jpg")
+        image_path = "encode.jpg"
+        with open(image_path, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
+        sp.playlist_upload_cover_image(playlist_id=new_playlist['id'], image_b64=encoded_string)
     else:
         current_time = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         previous_time.append(current_time)
@@ -50,17 +61,3 @@ while True:
                 print(idx, track['artists'][0]['name'], " – ", track['name'],)
         time.sleep(300)
         print(datetime.now())
-    
-
-total = str(int(total/count))
-playlist_name = "mixtape/"+ str(date(day=datetime.now().day ,month=datetime.now().month ,year=datetime.now().year))
-new_playlist = sp.user_playlist_create(user=sp.current_user()['id'],name=playlist_name, description="i'm feeling a light to decent " + total)
-if track_uris:
-    sp.playlist_add_items(playlist_id=new_playlist['id'], items=track_uris)
-for image in cover_img:
-    img = Image.blend(img, image, 0.2)
-img.save("encode.jpg")
-image_path = "encode.jpg"
-with open(image_path, "rb") as image_file:
-    encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
-sp.playlist_upload_cover_image(playlist_id=new_playlist['id'], image_b64=encoded_string)
