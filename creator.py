@@ -10,7 +10,7 @@ import base64
 # Your Spotify API credentials
 CLIENT_ID = "e23837e75d6b4e5d99d4e19dd9e23480"
 CLIENT_SECRET = "c5e1283ae5114db5bbf68980b56c5805"
-REFRESH_TOKEN = "your_refresh_token_here"  # Replace with your actual refresh token
+REFRESH_TOKEN = "AQD-ud0O60rwsRKqOjqjsi-akdU0oIx1yy7xFUGENKQdb8ZMyRtLgqXcawgW7iBVloPBu8JpqB9ZgSZ-hJJoEz5L_EZDbULh7grJsE7BImnkgD0OCJe4cUxa1fSHP2H8ozg"  # Replace with your actual refresh token
 TOKEN_URL = "https://accounts.spotify.com/api/token"
 
 def refresh_access_token():
