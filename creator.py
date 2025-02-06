@@ -8,11 +8,12 @@ from PIL import Image
 import base64
 import threading
 from flask import Flask
+import os
 
 # Spotify API credentials
 CLIENT_ID = "e23837e75d6b4e5d99d4e19dd9e23480"
 CLIENT_SECRET = "c5e1283ae5114db5bbf68980b56c5805"
-REFRESH_TOKEN = "AQD-ud0O60rwsRKqOjqjsi-akdU0oIx1yy7xFUGENKQdb8ZMyRtLgqXcawgW7iBVloPBu8JpqB9ZgSZ-hJJoEz5L_EZDbULh7grJsE7BImnkgD0OCJe4cUxa1fSHP2H8ozg"  # Replace with your actual refresh token
+REFRESH_TOKEN = "your_refresh_token_here"  # Replace with your actual refresh token
 TOKEN_URL = "https://accounts.spotify.com/api/token"
 
 def refresh_access_token():
@@ -27,8 +28,10 @@ def refresh_access_token():
     token_info = response.json()
     
     if "access_token" not in token_info:
+        print("❌ ERROR: Failed to refresh access token:", token_info)
         raise Exception("Failed to refresh access token. Check credentials and refresh token.")
     
+    print("✅ Successfully refreshed access token.")
     return token_info["access_token"]
 
 # Initialize Spotify client with refreshed token
@@ -51,8 +54,7 @@ previous_time = []
 current_time = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0).isoformat().replace("+00:00", "Z")
 previous_time.append(current_time)
 
-print("Starting tracking...")
-time.sleep(10)
+print("🎵 Starting Spotify tracking...")
 
 def spotify_tracking_loop():
     """Continuously tracks played songs and creates playlists."""
@@ -60,22 +62,32 @@ def spotify_tracking_loop():
     
     while True:
         try:
+            print("🔄 Checking Spotify API for recently played tracks...")
             sp = get_spotify_client()  # Always use a fresh access token
 
             if datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0).date() != datetime.fromisoformat(current_time.replace("Z", "+00:00")).date():
+                print("🎶 Creating new daily playlist...")
+
                 total = str(int(total / count)) if count > 0 else "0"
                 playlist_name = f"mixtape/{datetime.now().date()}"
+                user_id = sp.current_user()["id"]
+                print(f"👤 User ID: {user_id}")
+                
                 new_playlist = sp.user_playlist_create(
-                    user=sp.current_user()["id"],
+                    user=user_id,
                     name=playlist_name,
                     description=f"i'm feeling a light to decent {total}"
                 )
 
+                print(f"✅ Created playlist: {playlist_name}")
+
                 if track_uris:
                     sp.playlist_add_items(playlist_id=new_playlist["id"], items=track_uris)
+                    print(f"📀 Added {len(track_uris)} tracks to playlist.")
 
                 # Blend images
                 if cover_img:
+                    print("🖼️ Blending cover images...")
                     blended_img = cover_img[0]
                     for img in cover_img[1:]:
                         blended_img = Image.blend(blended_img, img, 0.2)
@@ -85,6 +97,7 @@ def spotify_tracking_loop():
                     with open("encode.jpg", "rb") as image_file:
                         encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
                     sp.playlist_upload_cover_image(playlist_id=new_playlist["id"], image_b64=encoded_string)
+                    print("✅ Uploaded custom playlist cover.")
 
                 # Reset for new day
                 track_uris = []
@@ -110,15 +123,16 @@ def spotify_tracking_loop():
 
                         track_uris.append(track["uri"])
 
-                print(f"Checked at {datetime.now()}")
+                print(f"✅ Checked at {datetime.now()}: {len(track_uris)} total tracks found.")
+
             time.sleep(300)  # Check every 5 minutes
 
         except SpotifyException as e:
-            print("Spotify API error:", e)
+            print("❌ Spotify API error:", e)
             time.sleep(10)  # Wait before retrying
 
         except Exception as e:
-            print("Unexpected error:", e)
+            print("❌ Unexpected error:", e)
             time.sleep(30)  # Avoid crashing the script
 
 # Start the Spotify tracking loop in a separate thread
@@ -131,9 +145,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Spotify bot is running!"
+    return "✅ Spotify bot is running!"
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 10000))  # Render sets the port dynamically
     app.run(host="0.0.0.0", port=port)
