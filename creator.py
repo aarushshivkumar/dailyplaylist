@@ -58,8 +58,8 @@ for idx, item in enumerate(results['items']):
             count += 1
             temp = track['album']['images'][0]['url']
             response = requests.get(temp)
-            img = Image.open(BytesIO(response.content))
-            cover_img.append(img)
+            tempimg = Image.open(BytesIO(response.content))
+            cover_img.append(tempimg)
             # track_uris.append(track['uri'])
         track_uris.append(track['uri'])
         print(idx, track['artists'][0]['name'], " – ", track['name'],)
