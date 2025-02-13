@@ -5,8 +5,6 @@ from datetime import datetime, time, date, timedelta
 import requests
 from io import BytesIO
 from PIL import Image
-import requests
-from io import BytesIO
 import base64
 
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
