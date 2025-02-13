@@ -1,3 +1,4 @@
+import os
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from datetime import datetime, time, date, timedelta
