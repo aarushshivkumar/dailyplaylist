@@ -10,9 +10,14 @@ import base64
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
-SPOTIFY_ACCESS_TOKEN = os.getenv("SPOTIFY_ACCESS_TOKEN")
 
-sp = spotipy.Spotify(auth=SPOTIFY_ACCESS_TOKEN)
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+    client_id=SPOTIFY_CLIENT_ID,
+    client_secret=SPOTIFY_CLIENT_SECRET,
+    redirect_uri=SPOTIFY_REDIRECT_URI,
+    scope=["user-read-recently-played", "playlist-modify-public", "user-read-private", "ugc-image-upload"],
+    cache_path=".cache"  # Automatically refreshes the token
+))
 
 current_time = datetime.combine(datetime.now(), time.min)
 with open('time.txt', 'r') as file:
