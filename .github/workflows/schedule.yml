@@ -36,9 +36,13 @@ jobs:
         run: python creator.py
 
       - name: Commit and push updated time.txt
+        env:
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_PAT}@github.com/${{ github.repository }}.git
           git add time.txt
           git commit -m "Update time.txt" || echo "No changes to commit"
           git push || echo "No changes to push"
+
