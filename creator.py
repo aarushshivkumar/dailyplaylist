@@ -70,7 +70,7 @@ with open('time.txt', 'w') as file:
     file.truncate()
     file.write(str(createtime))
 if exists:
-    new_playlist = sp.user_playlist_create(user=sp.current_user()['id'],name=playlist_name, description="i'm feeling a light to decent " + total)
+    new_playlist = sp.user_playlist_create(user=sp.current_user()['id'],name=playlist_name, description="i'm feeling a light to decent " + str(total))
     mixtape_id = new_playlist['id']
     if track_uris:
         sp.playlist_add_items(playlist_id=mixtape_id, items=track_uris)
