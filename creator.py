@@ -75,7 +75,7 @@ if exists:
     if track_uris:
         sp.playlist_add_items(playlist_id=mixtape_id, items=track_uris)
 else:
-    new_playlist = sp.user_playlist_change_details(user=sp.current_user()['id'],name=playlist_name, description="i'm feeling a light to decent " + str(total))
+    new_playlist = sp.user_playlist_change_details(user=sp.current_user()['id'],playlist_id=mixtape_id,name=playlist_name, description="i'm feeling a light to decent " + str(total))
     if track_uris:
         sp.playlist_add_items(playlist_id=mixtape_id, items=track_uris, position=0)
 for image in cover_img:
