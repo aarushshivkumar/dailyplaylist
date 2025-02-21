@@ -25,8 +25,6 @@ with open('time.txt', 'r') as file:
 print(current_time)
 # yesterday_time = datetime.combine(date.today()-timedelta(1), time.min)
 results = sp.current_user_recently_played(limit=50)
-count = 0
-total = 0
 track_uris = []
 cover_img = []
 playlist_name = "mixtape/"+ str(date(day=datetime.now().day ,month=datetime.now().month ,year=datetime.now().year))
@@ -48,7 +46,6 @@ else:
     img = Image.open(BytesIO(response.content))
 img.save("temp.jpg")
 for idx, item in enumerate(results['items']):
-    # if item['played_at'] > str(yesterday_time) and item['played_at'] < str(current_time):
     if datetime.strptime(item['played_at'], "%Y-%m-%dT%H:%M:%S.%fZ") > current_time:
         if idx == 0:
             createtime = item['played_at']
@@ -65,7 +62,7 @@ with open('time.txt', 'w') as file:
     file.truncate()
     file.write(str(createtime))
 if exists:
-    new_playlist = sp.user_playlist_create(user=sp.current_user()['id'],name=playlist_name, description="i'm feeling a light to decent " + str(total))
+    new_playlist = sp.user_playlist_create(user=sp.current_user()['id'],name=playlist_name)
     mixtape_id = new_playlist['id']
     if track_uris:
         sp.playlist_add_items(playlist_id=mixtape_id, items=track_uris)
@@ -82,7 +79,7 @@ for idx, item in enumerate(results['items']):
         total = total + track['popularity']
         count += 1
 total = int(total/count)
-new_playlist = sp.user_playlist_change_details(user=sp.current_user()['id'],playlist_id=mixtape_id,name=playlist_name, description="i'm feeling a light to decent " + str(total))
+new_playlist = sp.playlist_change_details(playlist_id=mixtape_id,name=playlist_name,public=False,description="i'm feeling a light to decent " + str(total))
 for image in cover_img:
     image = image.resize(img.size)
     image = image.convert("RGB")
