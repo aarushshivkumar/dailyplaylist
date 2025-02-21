@@ -23,7 +23,6 @@ current_time = datetime.combine(datetime.now(), time.min)
 with open('time.txt', 'r') as file:
     createtime = file.read().rstrip()
 print(current_time)
-# yesterday_time = datetime.combine(date.today()-timedelta(1), time.min)
 results = sp.current_user_recently_played(limit=50)
 track_uris = []
 cover_img = []
@@ -38,6 +37,7 @@ for idx, item in enumerate(playlists['items']):
             current_time = datetime.strptime(current_time, "%Y-%m-%dT%H:%M:%S.%fZ")
             exists = False
         break
+print(exists)
 if exists:
     img = Image.open("w.jpg")
 else:
