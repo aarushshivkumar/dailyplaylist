@@ -54,17 +54,12 @@ for idx, item in enumerate(results['items']):
             createtime = item['played_at']
         track = item['track']
         if track['uri'] not in track_uris:
-            total = total + track['popularity']
-            count += 1
             temp = track['album']['images'][0]['url']
             response = requests.get(temp)
             tempimg = Image.open(BytesIO(response.content))
             cover_img.append(tempimg)
-            # track_uris.append(track['uri'])
         track_uris.append(track['uri'])
         print(idx, track['artists'][0]['name'], " – ", track['name'],)
-if count!=0:
-    total = str(int(total/count))
 with open('time.txt', 'w') as file:
     file.seek(0)
     file.truncate()
@@ -75,9 +70,19 @@ if exists:
     if track_uris:
         sp.playlist_add_items(playlist_id=mixtape_id, items=track_uris)
 else:
-    new_playlist = sp.user_playlist_change_details(user=sp.current_user()['id'],playlist_id=mixtape_id,name=playlist_name, description="i'm feeling a light to decent " + str(total))
     if track_uris:
         sp.playlist_add_items(playlist_id=mixtape_id, items=track_uris, position=0)
+results = sp.playlist_tracks(playlist_id=mixtape_id)
+total = 0
+count = 0
+track_uris = []
+for idx, item in enumerate(results['items']):
+    track = item['track']
+    if track['uri'] not in track_uris:
+        total = total + track['popularity']
+        count += 1
+total = int(total/count)
+new_playlist = sp.user_playlist_change_details(user=sp.current_user()['id'],playlist_id=mixtape_id,name=playlist_name, description="i'm feeling a light to decent " + str(total))
 for image in cover_img:
     image = image.resize(img.size)
     image = image.convert("RGB")
