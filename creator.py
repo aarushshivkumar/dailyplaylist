@@ -30,7 +30,7 @@ playlist_name = "mixtape/"+ str(date(day=datetime.now().day ,month=datetime.now(
 playlists = sp.current_user_playlists()
 exists = True
 for idx, item in enumerate(playlists['items']):
-    print(item['name])
+    print(item['name'])
     if item['name'] == playlist_name:
         mixtape_id = item['id']
         with open('time.txt', 'r') as file:
