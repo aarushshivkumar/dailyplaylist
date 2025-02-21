@@ -79,7 +79,10 @@ for idx, item in enumerate(results['items']):
         total = total + track['popularity']
         count += 1
 total = int(total/count)
-new_playlist = sp.playlist_change_details(playlist_id=mixtape_id,name=playlist_name,public=False,description="i'm feeling a light to decent " + str(total))
+if datetime.now().hour > 11:
+    new_playlist = sp.playlist_change_details(playlist_id=mixtape_id,name=playlist_name,public=False,description="i'm feeling a light to decent " + str(total))
+else:
+    new_playlist = sp.playlist_change_details(playlist_id=mixtape_id,name=playlist_name,description="i'm feeling a light to decent " + str(total))
 for image in cover_img:
     image = image.resize(img.size)
     image = image.convert("RGB")
