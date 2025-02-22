@@ -80,7 +80,7 @@ for idx, item in enumerate(results['items']):
         count += 1
 if count!=0:
     total = int(total/count)
-if datetime.now().hour > 11:
+if datetime.now().hour > 23:
     new_playlist = sp.playlist_change_details(playlist_id=mixtape_id,name=playlist_name,public=False,description="i'm feeling a light to decent " + str(total))
 else:
     new_playlist = sp.playlist_change_details(playlist_id=mixtape_id,name=playlist_name,description="i'm feeling a light to decent " + str(total))
