@@ -78,7 +78,8 @@ for idx, item in enumerate(results['items']):
     if track['uri'] not in track_uris:
         total = total + track['popularity']
         count += 1
-total = int(total/count)
+if count!=0:
+    total = int(total/count)
 if datetime.now().hour > 11:
     new_playlist = sp.playlist_change_details(playlist_id=mixtape_id,name=playlist_name,public=False,description="i'm feeling a light to decent " + str(total))
 else:
