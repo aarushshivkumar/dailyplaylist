@@ -1,0 +1,51 @@
+name: Daily Playlist Update
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"  # Runs every 2 hours
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  update-playlist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Load cached time.txt
+        id: cache-time
+        uses: actions/cache@v3
+        with:
+          path: time.txt
+          key: time-file-${{ github.run_id }}
+
+      - name: Run the script
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_REDIRECT_URI: ${{ secrets.SPOTIFY_REDIRECT_URI }}
+        run: python creator.py
+
+      - name: Commit and push updated time.txt
+        env:
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git remote remove origin
+          git remote add origin https://x-access-token:${GITHUB_PAT}@github.com/${{ github.repository }}.git
+          git checkout main
+          git pull origin main
+          git add time.txt
+          git commit -m "Update time.txt" || echo "No changes to commit"
+          git push origin main
+
