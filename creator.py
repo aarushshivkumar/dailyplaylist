@@ -16,7 +16,6 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_secret=SPOTIFY_CLIENT_SECRET,
     redirect_uri=SPOTIFY_REDIRECT_URI,
     scope=["user-read-recently-played" ,"playlist-modify-public", "user-read-private", "ugc-image-upload"],
-    cache_path=".cache"
 ))
 
 current_time = datetime.combine(datetime.now(), time.min)
