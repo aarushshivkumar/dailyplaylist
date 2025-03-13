@@ -43,6 +43,9 @@ jobs:
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
           SPOTIFY_REDIRECT_URI: ${{ secrets.SPOTIFY_REDIRECT_URI }}
         run: python -u creator.py
+      
+      - name: Save Updated Cache
+        run: cat .cache > new_cache && mv new_cache .cache
 
       - name: Commit and push updated time.txt
         env:
