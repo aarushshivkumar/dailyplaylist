@@ -21,13 +21,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Load cached time.txt
-        id: cache-time
-        uses: actions/cache@v3
-        with:
-          path: time.txt
-          key: time-file-${{ github.run_id }}
-
       - name: Debug Environment Variables
         run: |
           echo "SPOTIFY_CLIENT_ID is set? " ${{ secrets.SPOTIFY_CLIENT_ID != '' }}
@@ -61,3 +54,4 @@ jobs:
           git add time.txt .cache
           git commit -m "Update time.txt" || echo "No changes to commit"
           git push origin main
+
