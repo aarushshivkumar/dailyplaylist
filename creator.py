@@ -1,7 +1,4 @@
 import os
-print("SPOTIFY_CLIENT_ID:", os.getenv("SPOTIFY_CLIENT_ID"))
-print("SPOTIFY_CLIENT_SECRET:", os.getenv("SPOTIFY_CLIENT_SECRET"))
-print("SPOTIFY_REDIRECT_URI:", os.getenv("SPOTIFY_REDIRECT_URI"))
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from datetime import datetime, time, date, timedelta
@@ -30,6 +27,7 @@ print(current_time)
 
 print("2")
 results = sp.current_user_recently_played(limit=50)
+print("3")
 track_uris = []
 cover_img = []
 playlist_name = "mixtape/"+ str(date(day=datetime.now().day ,month=datetime.now().month ,year=datetime.now().year))
