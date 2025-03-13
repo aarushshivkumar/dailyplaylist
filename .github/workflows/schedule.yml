@@ -33,6 +33,9 @@ jobs:
           echo "SPOTIFY_CLIENT_ID is set? " ${{ secrets.SPOTIFY_CLIENT_ID != '' }}
           echo "SPOTIFY_CLIENT_SECRET is set? " ${{ secrets.SPOTIFY_CLIENT_SECRET != '' }}
           echo "SPOTIFY_REDIRECT_URI is set? " ${{ secrets.SPOTIFY_REDIRECT_URI != '' }}
+      
+      - name: Restore Spotify Cache
+        run: echo "${{ secrets.SPOTIFY_CACHE }}" > .cache
 
       - name: Run the script
         env:
