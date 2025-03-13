@@ -51,7 +51,7 @@ jobs:
           git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
           git checkout main
           git pull origin main
-          git add time.txt .cache
+          git add time.txt
           git commit -m "Update time.txt" || echo "No changes to commit"
           git push origin main
 
