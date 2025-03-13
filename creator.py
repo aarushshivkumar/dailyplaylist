@@ -1,4 +1,7 @@
 import os
+print("SPOTIFY_CLIENT_ID:", os.getenv("SPOTIFY_CLIENT_ID"))
+print("SPOTIFY_CLIENT_SECRET:", os.getenv("SPOTIFY_CLIENT_SECRET"))
+print("SPOTIFY_REDIRECT_URI:", os.getenv("SPOTIFY_REDIRECT_URI"))
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from datetime import datetime, time, date, timedelta
