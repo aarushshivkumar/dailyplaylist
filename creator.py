@@ -25,7 +25,12 @@ with open('time.txt', 'r') as file:
     createtime = file.read().rstrip()
 print(current_time)
 
-print("2")
+token_info = sp.auth_manager.get_cached_token()
+if not token_info:
+    print("❌ ERROR: No access token retrieved!")
+    exit(1)
+else:
+    print("✅ Token retrieved successfully.")
 results = sp.current_user_recently_played(limit=50)
 print("3")
 track_uris = []
