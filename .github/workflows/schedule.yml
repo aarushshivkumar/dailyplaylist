@@ -35,7 +35,8 @@ jobs:
           echo "SPOTIFY_REDIRECT_URI is set? " ${{ secrets.SPOTIFY_REDIRECT_URI != '' }}
       
       - name: Restore Spotify Cache
-        run: echo "${{ secrets.SPOTIFY_CACHE }}" > .cache
+        run: echo "${{ secrets.SPOTIFY_CACHE }}" | base64 --decode > .cache
+
 
       - name: Run the script
         env:
@@ -45,7 +46,8 @@ jobs:
         run: python -u creator.py
       
       - name: Save Updated Cache
-        run: cat .cache > new_cache && mv new_cache .cache
+        run: cat .cache | base64 > new_cache && mv new_cache .cache
+
 
       - name: Commit and push updated time.txt
         env:
