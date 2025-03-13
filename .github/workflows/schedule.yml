@@ -28,6 +28,13 @@ jobs:
           path: time.txt
           key: time-file-${{ github.run_id }}
 
+      - name: Debug Environment Variables
+        run: |
+          echo "SPOTIFY_CLIENT_ID is set? " ${{ secrets.SPOTIFY_CLIENT_ID != '' }}
+          echo "SPOTIFY_CLIENT_SECRET is set? " ${{ secrets.SPOTIFY_CLIENT_SECRET != '' }}
+          echo "SPOTIFY_REDIRECT_URI is set? " ${{ secrets.SPOTIFY_REDIRECT_URI != '' }}
+
+
       - name: Run the script
         env:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
