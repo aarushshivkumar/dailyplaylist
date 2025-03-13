@@ -49,17 +49,16 @@ jobs:
         run: cat .cache | base64 > new_cache && mv new_cache .cache
 
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit and Push Changes
+      - name: Commit and push updated time.txt
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
         run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git remote remove origin
+          git remote add origin https://x-access-token:${GITHUB_PAT}@github.com/${{ github.repository }}.git
+          git checkout main
+          git pull origin main
           git add time.txt
-          git commit -m "Update time.txt"
-          git push https://${{ secrets.GH_PAT }}@github.com/aarushshivkumar/dailyplaylist.git main
-
-
+          git commit -m "Update time.txt" || echo "No changes to commit"
+          git push origin main
