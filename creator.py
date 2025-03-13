@@ -11,6 +11,8 @@ SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
+print("1")
+
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id=SPOTIFY_CLIENT_ID,
     client_secret=SPOTIFY_CLIENT_SECRET,
@@ -22,6 +24,8 @@ current_time = datetime.combine(datetime.now(), time.min)
 with open('time.txt', 'r') as file:
     createtime = file.read().rstrip()
 print(current_time)
+
+print("2")
 results = sp.current_user_recently_played(limit=50)
 track_uris = []
 cover_img = []
