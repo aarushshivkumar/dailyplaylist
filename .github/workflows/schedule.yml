@@ -40,7 +40,11 @@ jobs:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
           SPOTIFY_REDIRECT_URI: ${{ secrets.SPOTIFY_REDIRECT_URI }}
-        run: python creator.py
+        run: |
+          echo "SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}"
+          echo "SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}"
+          echo "SPOTIFY_REDIRECT_URI=${SPOTIFY_REDIRECT_URI}"
+          python creator.py
 
       - name: Commit and push updated time.txt
         env:
