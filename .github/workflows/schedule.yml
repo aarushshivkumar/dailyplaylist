@@ -51,14 +51,13 @@ jobs:
 
       - name: Commit and push updated time.txt
         env:
-          GITHUB_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git remote remove origin
-          git remote add origin https://x-access-token:${GITHUB_PAT}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
           git checkout main
           git pull origin main
-          git add time.txt
+          git add time.txt .cache
           git commit -m "Update time.txt" || echo "No changes to commit"
           git push origin main
