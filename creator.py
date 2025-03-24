@@ -56,7 +56,12 @@ else:
     img = Image.open(BytesIO(response.content))
 img.save("temp.jpg")
 for idx, item in enumerate(results['items']):
-    if datetime.strptime(item['played_at'], "%Y-%m-%dT%H:%M:%S.%fZ") > current_time:
+    played_at_str = item['played_at']
+    try:
+        played_at_time = datetime.strptime(played_at_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+    except ValueError:
+        played_at_time = datetime.strptime(played_at_str, "%Y-%m-%dT%H:%M:%SZ")
+    if played_at_time > current_time:
         if idx == 0:
             createtime = item['played_at']
         track = item['track']
