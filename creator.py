@@ -45,7 +45,7 @@ for idx, item in enumerate(playlists['items']):
         mixtape_id = item['id']
         with open('time.txt', 'r') as file:
             current_time = file.read().rstrip()
-            current_time = datetime.strptime(current_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+            current_time = datetime.strptime(current_time, "%Y-%m-%dT%H:%M:%SZ")
             exists = False
         break
 if exists:
@@ -56,7 +56,7 @@ else:
     img = Image.open(BytesIO(response.content))
 img.save("temp.jpg")
 for idx, item in enumerate(results['items']):
-    if datetime.strptime(item['played_at'], "%Y-%m-%dT%H:%M:%S.%fZ") > current_time:
+    if datetime.strptime(item['played_at'], "%Y-%m-%dT%H:%M:%SZ") > current_time:
         if idx == 0:
             createtime = item['played_at']
         track = item['track']
