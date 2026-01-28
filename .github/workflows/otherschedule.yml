@@ -1,0 +1,30 @@
+name: Backloggd
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"  # Runs every 2 hours
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  update-playlist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+        
+      - name: Run the script
+        run: python exporter.py https://backloggd.com/u/nottinghamreds/
+      
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add time.txt
+          git diff --cached --quiet || (git commit -m "Update time.txt" && git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main)
